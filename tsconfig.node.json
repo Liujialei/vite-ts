@@ -1,0 +1,34 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"composite": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"baseUrl": "./",
+		"paths": { // 路径映射，相对于baseUrl
+			"@/*": [
+				"src/*"
+			]
+		}
+	},
+	"include": [
+		"vite.config.ts",
+		"src/**/*",
+		"package.json",
+		"src/**/*.ts",
+		"src/**/*.d.ts",
+		"src/**/*.tsx",
+		"src/**/*.vue",
+		"types/**/*.d.ts",
+		"types/**/*.ts",
+		"build/**/*.ts",
+		"build/**/*.d.ts"
+	],
+	"vueCompilerOptions": {
+		"experimentalDisableTemplateSupport": true
+	},
+}
