@@ -1,0 +1,98 @@
+{
+  "hash": "afa1163a",
+  "browserHash": "370a9064",
+  "optimized": {
+    "@vueuse/core": {
+      "src": "../../node_modules/@vueuse/core/index.mjs",
+      "file": "@vueuse_core.js",
+      "fileHash": "cdb5b5ed",
+      "needsInterop": false
+    },
+    "element-plus": {
+      "src": "../../node_modules/element-plus/es/index.mjs",
+      "file": "element-plus.js",
+      "fileHash": "1ae83e9f",
+      "needsInterop": false
+    },
+    "vue": {
+      "src": "../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
+      "file": "vue.js",
+      "fileHash": "e15693ad",
+      "needsInterop": false
+    },
+    "vite/dist/client/client.mjs": {
+      "src": "../../node_modules/vite/dist/client/client.mjs",
+      "file": "vite_dist_client_client__mjs.js",
+      "fileHash": "ecc99aab",
+      "needsInterop": false
+    },
+    "element-plus/es": {
+      "src": "../../node_modules/element-plus/es/index.mjs",
+      "file": "element-plus_es.js",
+      "fileHash": "63a0a276",
+      "needsInterop": false
+    },
+    "element-plus/es/components/date-picker/style/css": {
+      "src": "../../node_modules/element-plus/es/components/date-picker/style/css.mjs",
+      "file": "element-plus_es_components_date-picker_style_css.js",
+      "fileHash": "79d84408",
+      "needsInterop": false
+    },
+    "element-plus/es/components/tag/style/css": {
+      "src": "../../node_modules/element-plus/es/components/tag/style/css.mjs",
+      "file": "element-plus_es_components_tag_style_css.js",
+      "fileHash": "8b09823e",
+      "needsInterop": false
+    },
+    "element-plus/es/components/input/style/css": {
+      "src": "../../node_modules/element-plus/es/components/input/style/css.mjs",
+      "file": "element-plus_es_components_input_style_css.js",
+      "fileHash": "3ceebcc9",
+      "needsInterop": false
+    },
+    "element-plus/es/components/button/style/css": {
+      "src": "../../node_modules/element-plus/es/components/button/style/css.mjs",
+      "file": "element-plus_es_components_button_style_css.js",
+      "fileHash": "b48f2fa1",
+      "needsInterop": false
+    },
+    "element-plus/es/components/menu/style/css": {
+      "src": "../../node_modules/element-plus/es/components/menu/style/css.mjs",
+      "file": "element-plus_es_components_menu_style_css.js",
+      "fileHash": "3ec950f1",
+      "needsInterop": false
+    },
+    "element-plus/es/components/menu-item/style/css": {
+      "src": "../../node_modules/element-plus/es/components/menu-item/style/css.mjs",
+      "file": "element-plus_es_components_menu-item_style_css.js",
+      "fileHash": "b0172af4",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-MCGNK5EV": {
+      "file": "chunk-MCGNK5EV.js"
+    },
+    "chunk-AO24X6OF": {
+      "file": "chunk-AO24X6OF.js"
+    },
+    "chunk-MU54JCUA": {
+      "file": "chunk-MU54JCUA.js"
+    },
+    "chunk-TWLJ45QX": {
+      "file": "chunk-TWLJ45QX.js"
+    },
+    "chunk-K7ZJP3VV": {
+      "file": "chunk-K7ZJP3VV.js"
+    },
+    "chunk-JDS26KVF": {
+      "file": "chunk-JDS26KVF.js"
+    },
+    "chunk-KDWFFYQO": {
+      "file": "chunk-KDWFFYQO.js"
+    },
+    "chunk-RTUC2IZX": {
+      "file": "chunk-RTUC2IZX.js"
+    }
+  }
+}
