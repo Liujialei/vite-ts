@@ -5,6 +5,7 @@ declare global{
 	
 	interface ViteEnv {
 		VITE_PORT: number;
+		VITE_PREVIEW_PORT: number;
 		VITE_USE_MOCK: boolean;
 		VITE_PUBLIC_PATH: string;
 		VITE_GLOB_APP_TITLE: string;

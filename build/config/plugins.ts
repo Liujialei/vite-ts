@@ -1,6 +1,6 @@
 import vue from '@vitejs/plugin-vue'
 
-import legacy from '@vitejs/plugin-legacy'
+// import legacy from '@vitejs/plugin-legacy'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
 //添加element UI Plus 添加按需自动引入组件库
@@ -13,9 +13,9 @@ const defaultPlugins = [
 	vueJsx({
 		// options are passed on to @vue/babel-plugin-jsx
 	}),
-	legacy({
-		targets: ['defaults', 'not IE 11']
-	}),
+	// legacy({
+	// 	targets: ['defaults', 'not IE 11']
+	// }),
 	AutoImport({
 	// imports: ["vue", "vue-router"],
 	resolvers: [ElementPlusResolver(

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { ElMessage } from 'element-plus'
-import { toggleDark } from '@/composables'
+// import { toggleDark } from '@/composables'
 
 defineProps<{ msg: string }>();
 
@@ -24,7 +24,7 @@ const toast = () => {
 		more information.
 	</p>
 	<el-menu class="el-menu-demo" mode="horizontal">
-		<el-menu-item h="full" @click="toggleDark()">
+		<el-menu-item h="full">
 			<button 
 				class="border-none w-full bg-transparent cursor-pointer" 
 				style="height: var(--ep-menu-item-height);">

@@ -7,7 +7,9 @@ import { resolve } from 'path'
 import { wrapperEnv } from './build/utils'
 import { defaultUnocss } from './build/config/unocss'
 import { defaultPlugins } from './build/config/plugins'
-import { cssPreprocessorOptions } from './build/config/css'
+import { cssModules,cssPreprocessorOptions } from './build/config/css'
+import defaultBuild from './build/config/build'
+import serverConfig from './build/config/serverConfig'
 
 
 function pathResolve(dir:string) {
@@ -20,13 +22,12 @@ export default defineConfig(({ command, mode }) => {
 	const env = loadEnv(mode, root);
 	const viteEnv = wrapperEnv(env);
 	const isBuild = command === 'serve';
-	const { VITE_PORT, VITE_PUBLIC_PATH, VITE_DROP_CONSOLE } = viteEnv;
+	const { VITE_PORT, VITE_PUBLIC_PATH, VITE_DROP_CONSOLE,VITE_PREVIEW_PORT } = viteEnv;
 	// console.log('viteEnv',viteEnv);
-	
 	return {
 		base:VITE_PUBLIC_PATH,
 		root,
-		// cacheDir: 'cache/deps',
+		cacheDir: 'cache/deps',
 		resolve:{
 			alias:[
 				{
@@ -36,11 +37,7 @@ export default defineConfig(({ command, mode }) => {
 			]
 		},
 		css:{
-			modules:{
-				scopeBehaviour: 'global',
-				generateScopedName: '[name]__[local]___[hash:base64:5]',
-				hashPrefix: 'prefix'
-			},
+			cssModules,
 			preprocessorOptions:cssPreprocessorOptions,
 		},
 		plugins: defaultPlugins,
@@ -51,17 +48,13 @@ export default defineConfig(({ command, mode }) => {
       host: true,
       port: VITE_PORT,
 			open: false,
-			proxy: {
-				'/api': {
-					target: "http://127.0.0.1:8800",
-					changeOrigin: true,
-					ws: true,
-					rewrite: (path: string) => path.replace(/^\/api/, '')
-				}
-			},
+			proxy: serverConfig,
 		},
-		build:{
-			  
+		defaultBuild,
+		preview:{
+			host:true,
+			port:VITE_PREVIEW_PORT,
+			open:true
 		}
 	}
 })
