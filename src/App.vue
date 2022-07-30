@@ -5,14 +5,11 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <div class="bg">
-    32434
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+	<div>
+		<router-view></router-view>
+	</div>
 </template>
 
 <style lang="scss">
-// .bg{
-// 	color:$text-color;
-// }
+
 </style>
