@@ -16,10 +16,10 @@ function pathResolve(dir:string) {
 const root = process.cwd()
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
-
+	
 	const env = loadEnv(mode, root)
 	const viteEnv = wrapperEnv(env)
-	const isBuild = command === 'serve'
+	// const isBuild = command === 'serve'
 	const { VITE_PORT, VITE_PUBLIC_PATH, VITE_DROP_CONSOLE,VITE_PREVIEW_PORT } = viteEnv
 	// console.log('viteEnv',viteEnv)
 	return {
@@ -31,6 +31,10 @@ export default defineConfig(({ command, mode }) => {
 				{
 					find:'@',
 					replacement: pathResolve('src')
+				},
+				{
+					find:'#',
+					replacement: pathResolve('types')
 				},
 			]
 		},

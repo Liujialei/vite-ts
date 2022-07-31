@@ -1,13 +1,11 @@
 
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 
-import { constantRouteList } from "./constantRoutes"
-
-const route =[]
+import { allowRouter } from "./constantRoutes"
 
 const router = createRouter({
 	history: createWebHashHistory(), 
-	routes:constantRouteList as unknown as RouteRecordRaw[],
+	routes:allowRouter as unknown as RouteRecordRaw[],
 	scrollBehavior () {
 		return {
 			top:0

@@ -13,5 +13,13 @@ declare global{
 		VITE_USE_CDN: boolean;
 		VITE_DROP_CONSOLE: boolean;
 	}
+	interface IObject<T> {
+		[index: string]: T
+	}
+	interface IResponse<T = any> {
+		Code: number;
+		Msg: string;
+		Data: T;
+	}
 }
 export {}
