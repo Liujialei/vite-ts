@@ -8,7 +8,7 @@ let loading:{close():void}
 const request = axios.create({
     // API 请求的默认前缀
     baseURL: import.meta.env.VUE_APP_API_BASE_URL as string | undefined,
-    timeout: 60000 // 请求超时时间
+    timeout: 5000 // 请求超时时间
 })
 
 // 异常拦截处理器
@@ -23,7 +23,7 @@ const errorHandler = (error:{message:string}) => {
     return Promise.reject(error)
 }
 
-// request interceptor
+// request 
 request.interceptors.request.use(config => {
     const { getStatus } = useLayoutStore()
     loading = ElLoading.service({
@@ -43,7 +43,7 @@ request.interceptors.request.use(config => {
     return config
 }, errorHandler)
 
-// response interceptor
+// response 
 request.interceptors.response.use((response:AxiosResponse<IResponse>) => {
     const { data } = response
     const { getStatus, logout } = useLayoutStore()

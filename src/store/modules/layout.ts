@@ -8,6 +8,7 @@ import { RouteLocationNormalizedLoaded } from 'vue-router'
 import { login, loginParam, getRouterList, getUser } from '@/api/layout'
 
 const setting = getLocal<ISetting>('setting')
+//获取token
 const { ACCESS_TOKEN } = getLocal<IStatus>('token')
 
 // useStore 可以是 useUser、useCart 之类的任何东西
@@ -40,6 +41,7 @@ export const useLayoutStore = defineStore({
 			usePinyinSearch: setting.usePinyinSearch !== undefined ? setting.usePinyinSearch : false,
 			mode: setting.mode || 'vertical'
 		},
+		//获取token认证信息
 		status: {
 			isLoading: false,
 			ACCESS_TOKEN: ACCESS_TOKEN || ''
@@ -58,6 +60,7 @@ export const useLayoutStore = defineStore({
 		getSetting():ISetting {
 				return this.setting
 		},
+		//获取token认证信息
 		getStatus():IStatus {
 				return this.status
 		}
@@ -66,48 +69,48 @@ export const useLayoutStore = defineStore({
 		changeCollapsed():void {
 			this.menubar.status = this.menubar.isPhone
 				? this.menubar.status === IMenubarStatus.PHN 
-					? IMenubarStatus.PHE 
-					: IMenubarStatus.PHN
-					: this.menubar.status === IMenubarStatus.PCN 
-					? IMenubarStatus.PCE 
-					: IMenubarStatus.PCN
+				? IMenubarStatus.PHE 
+				: IMenubarStatus.PHN
+				: this.menubar.status === IMenubarStatus.PCN 
+				? IMenubarStatus.PCE 
+				: IMenubarStatus.PCN
 		},
 		changeDeviceWidth():void {
-				this.menubar.isPhone = document.body.offsetWidth < 768
-				this.menubar.status = this.menubar.isPhone ? IMenubarStatus.PHN : IMenubarStatus.PCE
+			this.menubar.isPhone = document.body.offsetWidth < 768
+			this.menubar.status = this.menubar.isPhone ? IMenubarStatus.PHN : IMenubarStatus.PCE
 		},
 		// 切换导航，记录打开的导航
 		changeTagNavList(cRouter:RouteLocationNormalizedLoaded):void {
-				if(!this.setting.showTags) return // 判断是否开启多标签页
-				// if(cRouter.meta.hidden && !cRouter.meta.activeMenu) return // 隐藏的菜单如果不是子菜单则不添加到标签
-				if(new RegExp('^\/redirect').test(cRouter.path)) return
-				const index = this.tags.tagsList.findIndex(v => v.path === cRouter.path)
-				this.tags.tagsList.forEach(v => v.isActive = false)
-				// 判断页面是否打开过
-				if(index !== -1) {
-						this.tags.tagsList[index].isActive = true
-						return
-				}
-				const tagsList:ITagsList = {
-						name: cRouter.name as string,
-						title: cRouter.meta.title as string,
-						path: cRouter.path,
-						isActive: true
-				}
-				this.tags.tagsList.push(tagsList)
+			if(!this.setting.showTags) return // 判断是否开启多标签页
+			// if(cRouter.meta.hidden && !cRouter.meta.activeMenu) return // 隐藏的菜单如果不是子菜单则不添加到标签
+			if(new RegExp('^\/redirect').test(cRouter.path)) return
+			const index = this.tags.tagsList.findIndex(v => v.path === cRouter.path)
+			this.tags.tagsList.forEach(v => v.isActive = false)
+			// 判断页面是否打开过
+			if(index !== -1) {
+				this.tags.tagsList[index].isActive = true
+				return
+			}
+			const tagsList:ITagsList = {
+				name: cRouter.name as string,
+				title: cRouter.meta.title as string,
+				path: cRouter.path,
+				isActive: true
+			}
+			this.tags.tagsList.push(tagsList)
 		},
 		removeTagNav(obj:{tagsList:ITagsList, cPath: string}):void {
-				const index = this.tags.tagsList.findIndex(v => v.path === obj.tagsList.path)
-				if(this.tags.tagsList[index].path === obj.cPath) {
-						this.tags.tagsList.splice(index, 1)
-						const i = index === this.tags.tagsList.length ? index - 1 : index
-						this.tags.tagsList[i].isActive = true
-						this.removeCachedViews({ name: obj.tagsList.name, index })
-						router.push({ path: this.tags.tagsList[i].path })
-				}else{
-						this.tags.tagsList.splice(index, 1)
-						this.removeCachedViews({ name: obj.tagsList.name, index })
-				}
+			const index = this.tags.tagsList.findIndex(v => v.path === obj.tagsList.path)
+			if(this.tags.tagsList[index].path === obj.cPath) {
+				this.tags.tagsList.splice(index, 1)
+				const i = index === this.tags.tagsList.length ? index - 1 : index
+				this.tags.tagsList[i].isActive = true
+				this.removeCachedViews({ name: obj.tagsList.name, index })
+				router.push({ path: this.tags.tagsList[i].path })
+			}else{
+				this.tags.tagsList.splice(index, 1)
+				this.removeCachedViews({ name: obj.tagsList.name, index })
+			}
 		},
 		removeOtherTagNav(tagsList:ITagsList):void {
 				const index = this.tags.tagsList.findIndex(v => v.path === tagsList.path)
@@ -152,21 +155,52 @@ export const useLayoutStore = defineStore({
 				}
 				
 		},
+		// 缓存重置
 		changeNocacheViewStatus(isNoCache: boolean) {
 				this.tags.isNocacheView = isNoCache
 		},
+		//退出登录
 		logout():void {
-				this.status.ACCESS_TOKEN = ''
-				localStorage.removeItem('token')
-				history.go(0)
+			this.status.ACCESS_TOKEN = ''
+			localStorage.removeItem('token')
+			history.go(0)
 		},
+		//登录信息
+		async login(param: loginParam):Promise<void> {
+			const res = await login(param)
+			const token = res.data.Data
+			this.status.ACCESS_TOKEN = token
+			setLocal('token', this.status, 1000 * 60 * 60)
+			const { query } = router.currentRoute.value
+			router.push(
+				typeof query.from === 'string' 
+				? decode(query.from) : '/'
+			)
+		},
+		//获取用户信息
+		async getUser():Promise<void> {
+			const res = await getUser()
+			const userInfo = res.data.Data
+			this.userInfo.name = userInfo.name
+			this.userInfo.role = userInfo.role
+		},
+		//读取token信息
 		setToken(token:string):void {
-				this.status.ACCESS_TOKEN = token
-				setLocal('token', this.status, 1000 * 60 * 60)
+			this.status.ACCESS_TOKEN = token
+			setLocal('token', this.status, 1000 * 60 * 60)
 		},
+		//获取路由表信息
+		async GenerateRoutes():Promise<void> {
+			const res = await getRouterList()
+			const { Data } = res.data
+			//异步加载的路由表进行权限处理
+			generatorDynamicRouter(Data)
+		},
+		//获取处理后的路由信息
 		setRoutes(data: Array<IMenubarList>):void {
 				this.menubar.menuList = data
 		},
+		//合并路由
 		concatAllowRoutes():void {
 				allowRouter.reverse().forEach(v => this.menubar.menuList.unshift(v))
 		},
@@ -210,25 +244,6 @@ export const useLayoutStore = defineStore({
 		changemenubarMode(mode: 'horizontal' | 'vertical'):void {
 				this.setting.mode = mode
 				localStorage.setItem('setting', JSON.stringify(this.setting))
-		},
-		async login(param: loginParam):Promise<void> {
-				const res = await login(param)
-				const token = res.data.Data
-				this.status.ACCESS_TOKEN = token
-				setLocal('token', this.status, 1000 * 60 * 60)
-				const { query } = router.currentRoute.value
-				router.push(typeof query.from === 'string' ? decode(query.from) : '/')
-		},
-		async getUser():Promise<void> {
-				const res = await getUser()
-				const userInfo = res.data.Data
-				this.userInfo.name = userInfo.name
-				this.userInfo.role = userInfo.role
-		},
-		async GenerateRoutes():Promise<void> {
-				const res = await getRouterList()
-				const { Data } = res.data
-				generatorDynamicRouter(Data)
 		}
 	}
 })

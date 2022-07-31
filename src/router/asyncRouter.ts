@@ -9,7 +9,7 @@ const components:IObject<() => Promise<typeof import('*.vue')>> = {
 	Layout: (() => 
 		import('@/layout/index.vue')) as unknown as () => Promise<typeof import('*.vue')>
 }
-
+//生成() => import('/src/views/*.vue)文件地址
 Object.keys(modules).forEach(key => {
     const nameMatch = key.match(/^\.\.\/views\/(.+)\.vue/)
     if(!nameMatch) return
