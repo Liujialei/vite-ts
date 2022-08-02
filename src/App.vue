@@ -5,11 +5,15 @@
 </script>
 
 <template>
-	<div>
+	<div class='router-view-page'>
 		<router-view></router-view>
 	</div>
 </template>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+.router-view-page{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
 </style>

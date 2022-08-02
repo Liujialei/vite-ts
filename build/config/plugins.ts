@@ -1,5 +1,6 @@
 import vue from '@vitejs/plugin-vue'
-
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons' 
+import { resolve } from 'path'
 // import legacy from '@vitejs/plugin-legacy'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
@@ -7,7 +8,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-
+const root = process.cwd()
 const defaultPlugins = [
 	vue(),
 	vueJsx({
@@ -34,6 +35,12 @@ const defaultPlugins = [
 			// importStyle: 'sass'
 		})],
 		dts: 'src/components.d.ts'  // 按需加载的文件夹['src/components']
+	}),
+	createSvgIconsPlugin({
+		// 指定需要缓存的图标文件夹
+		iconDirs: [resolve(root, 'src/assets/icons/svg')],
+		// 指定symbolId格式
+		symbolId: 'icon-[dir]-[name]'
 	})
 ]
 

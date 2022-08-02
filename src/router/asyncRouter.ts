@@ -39,11 +39,16 @@ const asyncRouter:IMenubarList[] = [
 ]
 const generatorDynamicRouter = (data:IMenubarList[]):void => {
 	const { setRoutes } = useLayoutStore()
+	//对获取的异步路由进行进一步treeList处理
 	const routerList:IMenubarList[] = listToTree(data, 0)
+	
 	asyncRouter.forEach(v => routerList.push(v))
+	
 	const f = (data:IMenubarList[], pData:IMenubarList|null) => {
 		for(let i = 0,len = data.length;i < len;i++) {
 			const v:IMenubarList = data[i]
+			console.log('v',v);
+			
 			if(typeof v.component === 'string') v.component = components[v.component]
 			if(!v.meta?.permission || pData && v.meta.permission.length === 0) {
 				if(v.meta)

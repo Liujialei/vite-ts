@@ -42,17 +42,19 @@ router.beforeEach(async(to,from) => {
 		: appTitle.match(reg) 
 		? appTitle.replace(reg, `${to.meta.title}$2`) 
 		: `${to.meta.title} | ${appTitle}`
-	 // 判断当前是否在登陆页面
-	 console.log('router',router);
+	 
+		// 判断当前是否在登陆页面
 	 if(to.path.toLocaleLowerCase()===loginRoutePath.toLocaleLowerCase()){
 		done()
 		if(getStatus.ACCESS_TOKEN) return typeof to.query.from === 'string' ? decode(to.query.from) : defaultRoutePath
 			return
 		}
+
 	 // 判断是否登录
 	 	if(!getStatus.ACCESS_TOKEN) {
 			return loginRoutePath + (to.fullPath ? `?from=${encode(to.fullPath)}` : '')
 	 	}
+		
 		// 前端检查token是否失效
     useLocal(verifyToken)
 		.then(d =>setToken(d.ACCESS_TOKEN))

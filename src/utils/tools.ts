@@ -130,7 +130,7 @@ export function throttle(time = 500):()=>Promise<void> {
  * @param pid 最外层pid
  */
 export function listToTree(data:Array<IMenubarList>, pid: string | number = 1, isChildNull = false):Array<IMenubarList> {
-    const d:Array<IMenubarList> = []
+    const _tree:Array<IMenubarList> = []
     data.forEach(val => {
         if(val.parentId == pid) {
             const list = listToTree(data, val.id, isChildNull)
@@ -138,10 +138,10 @@ export function listToTree(data:Array<IMenubarList>, pid: string | number = 1, i
             if(!isChildNull || list.length !== 0) {
                 obj.children = list
             }
-            d.push(obj)
+            _tree.push(obj)
         }
     })
-    return d
+    return _tree
 }
 /**
   * 字符串首字母大写
