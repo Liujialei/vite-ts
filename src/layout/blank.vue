@@ -6,9 +6,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
-	name: 'LayoutBlank',
-	setup() {
-		return {}
-	}
+  name: 'LayoutBlank',
+  setup() {
+    return {}
+  }
 })
 </script>

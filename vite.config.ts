@@ -39,11 +39,7 @@ export default defineConfig(({ command, mode }) => {
 				{
 					find:'#',
 					replacement: pathResolve('types')
-				},
-				{
-					find:'/mock',
-					replacement: pathResolve('mock')
-				},
+				}
 			]
 		},
 		css:{

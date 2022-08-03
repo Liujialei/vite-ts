@@ -1,5 +1,5 @@
 import { user, user_role, role_route, route } from './data/user'
-import { IMenubarList } from '@/type/store/layout'
+import { IMenubarList } from '../src/type/store/layout'
 import { IReq } from './index'
 
 export const setToken = function(name: string):string {

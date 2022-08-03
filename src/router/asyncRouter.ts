@@ -6,63 +6,63 @@ import { useLayoutStore } from '@/store/modules/layout'
 // 动态路由名称映射表
 const modules = import.meta.glob('../views/**/**.vue')
 const components:IObject<() => Promise<typeof import('*.vue')>> = {
-	Layout: (() => 
-		import('@/layout/index.vue')) as unknown as () => Promise<typeof import('*.vue')>
+  Layout: (() => 
+    import('@/layout/index.vue')) as unknown as () => Promise<typeof import('*.vue')>
 }
 //生成() => import('/src/views/*.vue)文件地址
 Object.keys(modules).forEach(key => {
-    const nameMatch = key.match(/^\.\.\/views\/(.+)\.vue/)
-    if(!nameMatch) return
-    // 排除_Components文件夹下的文件
-    if(nameMatch[1].includes('_Components')) return
-    // 如果页面以Index命名，则使用父文件夹作为name
-    const indexMatch = nameMatch[1].match(/(.*)\/Index$/i)
-    let name = indexMatch ? indexMatch[1] : nameMatch[1];
-    [name] = name.split('/').splice(-1)
-    components[name] = modules[key] as () => Promise<typeof import('*.vue')>
+  const nameMatch = key.match(/^\.\.\/views\/(.+)\.vue/)
+  if(!nameMatch) return
+  // 排除_Components文件夹下的文件
+  if(nameMatch[1].includes('_Components')) return
+  // 如果页面以Index命名，则使用父文件夹作为name
+  const indexMatch = nameMatch[1].match(/(.*)\/Index$/i)
+  let name = indexMatch ? indexMatch[1] : nameMatch[1];
+  [name] = name.split('/').splice(-1)
+  components[name] = modules[key] as () => Promise<typeof import('*.vue')>
 })
 
 const asyncRouter:IMenubarList[] = [
-	{
-		path: '/:pathMatch(.*)*', 
-		name: 'NotFound', 
-		component: components['404'],
-		meta: {
-				title: 'NotFound',
-				icon: '',
-				hidden: true
-		}, 
-		redirect: {
-				name: '404'
-		}
-	}
+  {
+    path: '/:pathMatch(.*)*', 
+    name: 'NotFound', 
+    component: components['404'],
+    meta: {
+      title: 'NotFound',
+      icon: '',
+      hidden: true
+    }, 
+    redirect: {
+      name: '404'
+    }
+  }
 ]
 const generatorDynamicRouter = (data:IMenubarList[]):void => {
-	const { setRoutes } = useLayoutStore()
-	//对获取的异步路由进行进一步treeList处理
-	const routerList:IMenubarList[] = listToTree(data, 0)
+  const { setRoutes } = useLayoutStore()
+  //对获取的异步路由进行进一步treeList处理
+  const routerList:IMenubarList[] = listToTree(data, 0)
 	
-	asyncRouter.forEach(v => routerList.push(v))
+  asyncRouter.forEach(v => routerList.push(v))
 	
-	const f = (data:IMenubarList[], pData:IMenubarList|null) => {
-		for(let i = 0,len = data.length;i < len;i++) {
-			const v:IMenubarList = data[i]
-			console.log('v',v);
+  const f = (data:IMenubarList[], pData:IMenubarList|null) => {
+    for(let i = 0,len = data.length;i < len;i++) {
+      const v:IMenubarList = data[i]
+      console.log('v',v);
 			
-			if(typeof v.component === 'string') v.component = components[v.component]
-			if(!v.meta?.permission || pData && v.meta.permission.length === 0) {
-				if(v.meta)
-				v.meta.permission = pData && pData.meta && pData.meta.permission ? pData.meta.permission : []
-			}
-			if(v.children && v.children.length > 0) {
-					f(v.children, v)
-			}
-		}
-	}
-	f(routerList, null)
-	setRoutes(routerList)
+      if(typeof v.component === 'string') v.component = components[v.component]
+      if(!v.meta?.permission || pData && v.meta.permission.length === 0) {
+        if(v.meta)
+          v.meta.permission = pData && pData.meta && pData.meta.permission ? pData.meta.permission : []
+      }
+      if(v.children && v.children.length > 0) {
+        f(v.children, v)
+      }
+    }
+  }
+  f(routerList, null)
+  setRoutes(routerList)
 }
 export {
-	components,
-	generatorDynamicRouter
+  components,
+  generatorDynamicRouter
 }

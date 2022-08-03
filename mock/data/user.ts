@@ -1,4 +1,4 @@
-import { IMenubarList } from '/@/type/store/layout'
+import { IMenubarList } from '../../src/type/store/layout'
 export const user = [
     { name: 'admin', pwd: 'admin' },
     { name: 'dev', pwd: 'dev' },

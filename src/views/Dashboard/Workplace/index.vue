@@ -72,16 +72,16 @@ import { useLayoutStore } from '@/store/modules/layout'
 // import List from '/@/views/Dashboard/Workplace/_Components/List.vue'
 
 export default defineComponent({
-	name: 'Workplace',
-	components: {
-		// List,
-		// Chart
-	},
-	setup() {
-		const { getUserInfo } = useLayoutStore()
-		return {
-			user: getUserInfo
-		}
-	}
+  name: 'Workplace',
+  components: {
+    // List,
+    // Chart
+  },
+  setup() {
+    const { getUserInfo } = useLayoutStore()
+    return {
+      user: getUserInfo
+    }
+  }
 })
 </script>

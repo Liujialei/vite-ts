@@ -33,51 +33,51 @@ import { useLayoutStore } from '@/store/modules/layout'
 // import { Avatar } from '@element-plus/icons-vue'
 
 export default defineComponent({
-	setup(props, context) {
-		const { login } = useLayoutStore()
-		const passWord = ref(null)
-		const formSize = ref('default')
-		const labelWidth = ref('120px')
-		const ruleFormRef = ref<FormInstance>()
-		const ruleForm = reactive({
-			userName: 'admin',
-			passWord: 'admin'
-		})
-		const rules = reactive<FormRules>({
-			userName: [
-				{ required: true, message: '请输入用户名', trigger: 'blur' },
-				{ min: 3, max: 5, message: '用户名大小长度为3-5', trigger: 'blur' }
-			],
-			passWord: [
-				{ required: true, message: '请输入用密码', trigger: 'blur' },
-				{ min: 3, max: 5, message: '密码大小长度为3', trigger: 'blur' }
-			]
-		})
+  setup(props, context) {
+    const { login } = useLayoutStore()
+    const passWord = ref(null)
+    const formSize = ref('default')
+    const labelWidth = ref('120px')
+    const ruleFormRef = ref<FormInstance>()
+    const ruleForm = reactive({
+      userName: 'admin',
+      passWord: 'admin'
+    })
+    const rules = reactive<FormRules>({
+      userName: [
+        { required: true, message: '请输入用户名', trigger: 'blur' },
+        { min: 3, max: 5, message: '用户名大小长度为3-5', trigger: 'blur' }
+      ],
+      passWord: [
+        { required: true, message: '请输入用密码', trigger: 'blur' },
+        { min: 3, max: 5, message: '密码大小长度为3', trigger: 'blur' }
+      ]
+    })
 
-		//登录信息认证
-		const submitForm = async (formEl: FormInstance | undefined) => {
-			if (!formEl) return
-			await formEl.validate(async (valid, fields) => {
-				if (valid) {
-					const param ={
-						...ruleForm
-					}
-					await login(param)
-				} else {
-					console.log('error submit!', fields)
-				}
-			})
-		}
-		return { 
-			passWord,
-			formSize,
-			labelWidth,
-			ruleFormRef,
-			ruleForm,
-			rules,
-			submitForm
-		}
-	}
+    //登录信息认证
+    const submitForm = async (formEl: FormInstance | undefined) => {
+      if (!formEl) return
+      await formEl.validate(async (valid, fields) => {
+        if (valid) {
+          const param ={
+            ...ruleForm
+          }
+          await login(param)
+        } else {
+          console.log('error submit!', fields)
+        }
+      })
+    }
+    return { 
+      passWord,
+      formSize,
+      labelWidth,
+      ruleFormRef,
+      ruleForm,
+      rules,
+      submitForm
+    }
+  }
 })
 
 </script>

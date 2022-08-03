@@ -26,7 +26,7 @@ app.component('SvgIcon', SvgIcon)
 
 const ElIconsData = ElementPlusIconsVue as unknown as Array<() => Promise<typeof import('*.vue')>>
 for (const iconName in ElIconsData) {
-    app.component(`ElIcon${iconName}`, ElIconsData[iconName])
+  app.component(`ElIcon${iconName}`, ElIconsData[iconName])
 }
 
 app.use(router)

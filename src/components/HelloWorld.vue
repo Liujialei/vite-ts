@@ -11,7 +11,7 @@ const input = ref("element-plus");
 const curDate = ref('')
 
 const toast = () => {
-	ElMessage.success('Hello')
+  ElMessage.success('Hello')
 }
 </script>
 
