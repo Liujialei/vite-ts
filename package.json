@@ -14,9 +14,11 @@
 		"axios": "^0.27.2",
 		"element-plus": "^2.2.10",
 		"lodash": "^4.17.21",
+		"mockjs": "^1.1.0",
 		"nprogress": "^0.2.0",
 		"pinia": "^2.0.17",
 		"qs": "^6.11.0",
+		"vite-plugin-mock": "^2.9.6",
 		"vue": "^3.2.37"
 	},
 	"devDependencies": {

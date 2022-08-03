@@ -10,16 +10,16 @@ const api = {
 }
 
 export interface loginParam {
-    username: string,
-    password: string
+	userName: string,
+	passWord: string
 }
 
 export function login(param: loginParam):Promise<AxiosResponse<IResponse<string>>> {
-    return request({
-        url: api.login,
-        method: 'post',
-        data: param
-    })
+	return request({
+		url: api.login,
+		method: 'post',
+		data: param
+	})
 }
 
 export function publickey():Promise<AxiosResponse<IResponse<string>>> {
