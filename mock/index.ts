@@ -1,6 +1,6 @@
 import { MockMethod } from 'vite-plugin-mock'
 import { mock, Random } from 'mockjs'
-import { login, setToken, checkToken, getUser, getRoute } from './response'
+import { setToken, checkToken, getUser, getRoute } from './response'
 import { api } from "../src/type/mockApi"
 
 export interface IReq { 
@@ -52,7 +52,6 @@ export default [
 		timeout: 300,
 		response: (req: IReq) => {
 			const { userName, passWord } = req.body
-			// if(login(userName, passWord)) 
 			return responseData(200, '登陆成功', setToken(userName))
 			return responseData(401, '用户名或密码错误', '')
 		}

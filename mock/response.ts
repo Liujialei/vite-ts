@@ -13,10 +13,6 @@ export const checkToken = function(req:IReq):string {
     return userName
 }
 
-export const login = function(name: string, pwd: string):boolean {
-    return user.findIndex(v => v.name === name && v.pwd === pwd) !== -1
-}
-
 export const getUser = function(name: string):{name:string, role: Array<string>} {
     return {
         name,
@@ -32,7 +28,7 @@ export const getRoute = function(name: string):Array<IMenubarList> {
         arr.forEach(val => {
             if(val.id === v.id) {
                 const obj = Object.assign({},v)
-                obj.meta.permission = val.permission
+                if(obj.meta) obj.meta.permission = val.permission
                 filterRoute.push(obj)
             }
         })

@@ -169,6 +169,7 @@ export const useLayoutStore = defineStore({
     async login(param: loginParam):Promise<void> {
       const res = await login(param)
       const token = res.data.Data
+			//登录成功得到token
       this.status.ACCESS_TOKEN = token
       setLocal('token', this.status, 1000 * 60 * 60)
       const { query } = router.currentRoute.value

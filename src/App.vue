@@ -5,15 +5,9 @@
 </script>
 
 <template>
-	<div class='router-view-page'>
-		<router-view></router-view>
-	</div>
+	<router-view></router-view>
 </template>
 
 <style lang="scss" scoped>
-.router-view-page{
-	margin: 0;
-	padding: 0;
-	border: 0;
-}
+
 </style>

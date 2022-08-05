@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 import { AxiosResponse } from 'axios'
 import { IMenubarList } from '@/type/store/layout'
+import { filterParam } from "@/enums/filterParam"
 import { api } from "@/type/mockApi"
 
 export interface loginParam {
@@ -12,7 +13,7 @@ export function login(param: loginParam):Promise<AxiosResponse<IResponse<string>
   return request({
     url: api.login,
     method: 'post',
-    data: param
+    data: filterParam(param)
   })
 }
 

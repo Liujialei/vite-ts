@@ -75,9 +75,9 @@ export function isTextarea(el: HTMLElement): boolean {
  * @param pExpires 有效期(默认1年)
  */
 export function setLocal(name:string, data:IObject<any>, pExpires = 1000 * 60 * 60 * 24 * 365 * 1):void {
-  const d = data as ILocalStore
-  d.startTime = Date.now()
-  d.expires = pExpires
+  const time = data as ILocalStore
+  time.startTime = Date.now()
+  time.expires = pExpires
   localStorage.setItem(name, JSON.stringify(data))
 }
 /**
