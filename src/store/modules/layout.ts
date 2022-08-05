@@ -173,7 +173,8 @@ export const useLayoutStore = defineStore({
       this.status.ACCESS_TOKEN = token
       setLocal('token', this.status, 1000 * 60 * 60)
       const { query } = router.currentRoute.value
-      router.push(
+      
+			router.push(
         typeof query.from === 'string' 
           ? decode(query.from) : '/'
       )

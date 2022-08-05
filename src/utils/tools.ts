@@ -170,7 +170,7 @@ export function loadStorePage(modules: IObject<any>): IObject<any> {
 }
 
 /**
- * 两次编码url
+ * 两次解码url
  * @param url 
  * @returns 
  */
@@ -179,7 +179,7 @@ export function decode(url: string): string {
 }
 
 /**
- * 两次解码url
+ * 两次编码url
  * @param url 
  * @returns 
  */
