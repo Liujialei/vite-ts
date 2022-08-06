@@ -1,5 +1,6 @@
 import { ILocalStore } from '@/type/utils/tools'
 import { IMenubarList } from '@/type/store/layout'
+import qs from 'qs'
 /**
  * 睡眠函数
  * @param time 
@@ -78,7 +79,7 @@ export function setLocal(name:string, data:IObject<any>, pExpires = 1000 * 60 * 
   const time = data as ILocalStore
   time.startTime = Date.now()
   time.expires = pExpires
-  localStorage.setItem(name, JSON.stringify(data))
+  localStorage.setItem(name, qs.stringify(data))
 }
 /**
  * 判断localStorage有效期是否失效
@@ -97,7 +98,7 @@ export async function useLocal(name: string):Promise<ILocalStore> {
  */
 export function getLocal<T>(name:string):T {
   const l = localStorage.getItem(name)
-  const local = JSON.parse(l !== null ? l : '{}') as unknown as T
+  const local = qs.parse(l !== null ? l : '{}') as unknown as T
   return local
 }
 

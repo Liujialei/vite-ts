@@ -31,7 +31,7 @@ const defaultPluginsFun = (pluginsParam: any)=>{
 			// supportTs:false,
       // logger: false,
 			localEnabled: getParams(pluginsParam).isBuild,  // 开发打包开关
-			prodEnabled: !getParams(pluginsParam).isBuild, // 生产打包开关
+			prodEnabled:  getParams(pluginsParam).isBuild, // 生产打包开关
 			injectCode: `
 			import { setupProdMockServer } from 'mock/mockProdServer';
 			setupProdMockServer();

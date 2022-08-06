@@ -29,7 +29,7 @@ export default defineConfig(({ command, mode }) => {
 	return {
 		base:VITE_PUBLIC_PATH,
 		root,
-		cacheDir: 'cache/deps',
+		cacheDir: 'cache',
 		resolve:{
 			alias:[
 				{

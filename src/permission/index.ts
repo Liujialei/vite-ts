@@ -4,6 +4,7 @@ import { RouteRecordRaw } from 'vue-router'
 import { decode, encode } from '@/utils/tools'
 import { useLayoutStore } from '@/store/modules/layout'
 import { useLocal } from '@/utils/tools'
+import Cancel from "@/utils/cancel"
 
 configure({ 
   // easing: 'ease', // 动画方式
@@ -52,7 +53,7 @@ router.beforeEach(async(to,from) => {
 
 	 // 判断是否登录
 	 	if(!getStatus.ACCESS_TOKEN) {
-    return loginRoutePath + (to.fullPath ? `?from=${encode(to.fullPath)}` : '')
+    	return loginRoutePath + (to.fullPath ? `?from=${encode(to.fullPath)}` : '')
 	 	}
 		
   // 前端检查token是否失效
@@ -85,7 +86,8 @@ router.beforeEach(async(to,from) => {
 
   // 缓存重置
   changeNocacheViewStatus(false)
-
+	//处理路由跳转前取消所有请求 
+	Cancel.clearPendings()
 })
 
 router.afterEach(() => {

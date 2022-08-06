@@ -17,6 +17,7 @@
 							<el-button type="primary" @click="submitForm(ruleFormRef)">
 								登录
 							</el-button>
+							<el-button :plain="true" @click="open3">warning</el-button>
 						</el-form-item>
 					</el-form>
 				</div>
@@ -28,7 +29,7 @@
 
 <script lang="ts">
 import { defineComponent,onMounted,reactive, ref, toRef, toRefs } from 'vue'
-import { FormInstance, FormRules, ElNotification } from 'element-plus'
+import { FormInstance, FormRules, ElNotification, ElMessage } from 'element-plus'
 import { useLayoutStore } from '@/store/modules/layout'
 // import { Avatar } from '@element-plus/icons-vue'
 
@@ -43,6 +44,13 @@ export default defineComponent({
       userName: 'admin',
       passWord: 'admin'
     })
+
+		const open3 = () => {
+			ElMessage({
+				message: 'Warning, this is a warning message.',
+				type: 'warning',
+			})
+		}
     const rules = reactive<FormRules>({
       userName: [
         { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -75,7 +83,8 @@ export default defineComponent({
       ruleFormRef,
       ruleForm,
       rules,
-      submitForm
+      submitForm,
+			open3
     }
   }
 })

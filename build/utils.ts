@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import qs from 'qs'
 
 export function isDevFn(mode: string): boolean {
   return mode === 'development'
@@ -24,7 +25,7 @@ export function wrapperEnv(envConf: Recordable): ViteEnv {
     if (typeof realName === 'string') {
       process.env[envName] = realName
     } else if (typeof realName === 'object') {
-      process.env[envName] = JSON.stringify(realName)
+      process.env[envName] = qs.stringify(realName)
     }
   }
   return retObj

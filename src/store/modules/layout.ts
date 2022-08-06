@@ -6,6 +6,8 @@ import { generatorDynamicRouter } from '@/router/asyncRouter'
 import { allowRouter } from "@/router/constantRoutes"
 import { RouteLocationNormalizedLoaded } from 'vue-router'
 import { login, loginParam, getRouterList, getUser } from '@/api/layout'
+import { ElMessage } from 'element-plus'
+import qs from 'qs'
 
 const setting = getLocal<ISetting>('setting')
 //获取token
@@ -168,16 +170,31 @@ export const useLayoutStore = defineStore({
     //登录信息
     async login(param: loginParam):Promise<void> {
       const res = await login(param)
-      const token = res.data.Data
-			//登录成功得到token
-      this.status.ACCESS_TOKEN = token
-      setLocal('token', this.status, 1000 * 60 * 60)
-      const { query } = router.currentRoute.value
-      
-			router.push(
-        typeof query.from === 'string' 
-          ? decode(query.from) : '/'
-      )
+			const {Data,Msg,Code} = res.data
+			ElMessage({
+				message: 'Warning, this is a warning message.',
+				type: 'warning',
+			})
+			if(Code===200){
+				const token = Data
+				//登录成功得到token
+				this.status.ACCESS_TOKEN = token
+				setLocal('token', this.status, 1000 * 60 * 60)
+				ElMessage({
+					message: Msg,
+					type: 'success'
+				})
+				const { query } = router.currentRoute.value
+				router.push(
+					typeof query.from === 'string' 
+						? decode(query.from) : '/'
+				)
+			}else{
+				ElMessage({
+					message: Msg,
+					type: 'warning'
+				})
+			}
     },
     //获取用户信息
     async getUser():Promise<void> {
@@ -211,16 +228,16 @@ export const useLayoutStore = defineStore({
       if(num === this.setting.theme) return
       if(typeof num !== 'number') num = this.setting.theme
       this.setting.theme = num
-      localStorage.setItem('setting', JSON.stringify(this.setting))
+      localStorage.setItem('setting', qs.stringify(this.setting))
     },
     // 修改主题色
     changeThemeColor(color: string):void {
       this.setting.color.primary = color
-      localStorage.setItem('setting', JSON.stringify(this.setting))
+      localStorage.setItem('setting', qs.stringify(this.setting))
     },
     changeTagsSetting(showTags:boolean):void {
       this.setting.showTags = showTags
-      localStorage.setItem('setting', JSON.stringify(this.setting))
+      localStorage.setItem('setting', qs.stringify(this.setting))
 
       if(showTags) {
         const index = this.tags.tagsList.findIndex(v => v.path === router.currentRoute.value.path)
@@ -234,7 +251,7 @@ export const useLayoutStore = defineStore({
     },
     changePinSearchSetting(showPinyinSearch:boolean):void {
       this.setting.usePinyinSearch = showPinyinSearch
-      localStorage.setItem('setting', JSON.stringify(this.setting))
+      localStorage.setItem('setting', qs.stringify(this.setting))
     },
     // 下次进去该页面刷新该页面(解决子页面保存之后，回到父页面页面不刷新问题)
     refreshPage(path: string):void {
@@ -245,7 +262,7 @@ export const useLayoutStore = defineStore({
     },
     changemenubarMode(mode: 'horizontal' | 'vertical'):void {
       this.setting.mode = mode
-      localStorage.setItem('setting', JSON.stringify(this.setting))
+      localStorage.setItem('setting', qs.stringify(this.setting))
     }
   }
 })

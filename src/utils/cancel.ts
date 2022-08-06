@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import qs from 'qs'
 
 let pendings = {} as unknown as any
 // 添加请求
 const addPending = (config:any) => {
 	const {url,methods,data,headers} = config;
-	const id = [url,methods,JSON.stringify(data),JSON.stringify(headers)].join('&')
+	const id = [url,methods,qs.stringify(data),qs.stringify(headers)].join('&')
 	const cancel = pendings[id]
 	config.cancelToken = config.cancelToken || new axios.CancelToken(c => {
 		if(!cancel){
@@ -18,7 +19,7 @@ const addPending = (config:any) => {
 // 删除请求
 const removePending = (config:any) => {
 	const {url,methods,data,headers} = config;
-	const id = [url,methods,JSON.stringify(data),JSON.stringify(headers)].join('&')
+	const id = [url,methods,qs.stringify(data),qs.stringify(headers)].join('&')
 	const cancel = pendings[id]
 	if(cancel && typeof cancel == 'function'){
 			// 存在这个请求，删除

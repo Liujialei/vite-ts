@@ -55,7 +55,7 @@ request.interceptors.response.use((response:AxiosResponse<IResponse>) => {
 	// 对返回数据做点啥 比如状态进行拦截
 	const { data } = response
   const { getStatus, logout } = useLayoutStore()
-  loading.close()
+  // loading.close()
   if(data.Code !== 200) {
     let title = '请求失败'
     if(data.Code === 401) {
@@ -69,7 +69,7 @@ request.interceptors.response.use((response:AxiosResponse<IResponse>) => {
       message: data.Msg,
       type: 'error'
     })
-    return Promise.reject(new Error(data.Msg || 'Error'))
+    // return Promise.reject(new Error(data.Msg || 'Error'))
   }
   return response
 }, errorHandler)
