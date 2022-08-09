@@ -6,7 +6,7 @@ const cssModules = {
 
 const cssPreprocessorOptions = {
 	scss: {
-		additionalData: `@import '@/styles/variables.scss';`,
+		additionalData: `@import '@/styles/globalColor.scss';@import '@/styles/globalClass.scss';`,
 	}
 }
 

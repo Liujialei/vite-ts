@@ -4,6 +4,7 @@ import qs from 'qs'
 import Cancel from './cancel'
 import { ElLoading, ElNotification } from 'element-plus'
 
+
 let loading:{close():void}
 // 创建 axios 实例
 const request = axios.create({
@@ -14,30 +15,30 @@ const request = axios.create({
 
 // 异常拦截处理器
 const errorHandler = (error:any) => {
-	loading.close()
-	if(axios.isCancel(error)){
-		console.log('这是手动cancel的')
-	}else{
-		console.log(`err${error}`)
-		ElNotification({
-			title: '请求失败',
-			message: error.message,
-			type: 'error'
-		})
-	}
+  loading.close()
+  if(axios.isCancel(error)){
+    console.log('这是手动cancel的')
+  }else{
+    console.log(`err${error}`)
+    ElNotification({
+      title: '请求失败',
+      message: error.message,
+      type: 'error'
+    })
+  }
   return Promise.reject(error)
 }
 
 //添加请求拦截器
 request.interceptors.request.use(config => {
-  const { getStatus } = useLayoutStore()
   loading = ElLoading.service({
     lock: true,
     text: 'Loading',
     spinner: 'el-icon-loading',
     background: 'rgba(0, 0, 0, 0.4)'
   })
-	//token
+  //token
+	const { getStatus } = useLayoutStore()
   const token = getStatus.ACCESS_TOKEN
   if (token) {
     if(config&&config?.headers){
@@ -45,17 +46,18 @@ request.interceptors.request.use(config => {
     }
   }
 	
-	Cancel.removePending(config)
+  Cancel.removePending(config)
   return Cancel.addPending(config)
 }, errorHandler)
 
 // 添加响应拦截器 
 request.interceptors.response.use((response:AxiosResponse<IResponse>) => {
-  Cancel.clearPendings()
-	// 对返回数据做点啥 比如状态进行拦截
-	const { data } = response
-  const { getStatus, logout } = useLayoutStore()
-  // loading.close()
+  
+	// Cancel.clearPendings()
+  // 对返回数据做点啥 比如状态进行拦截
+  const { data } = response
+  const { getStatus,logout } = useLayoutStore()
+  loading.close()
   if(data.Code !== 200) {
     let title = '请求失败'
     if(data.Code === 401) {

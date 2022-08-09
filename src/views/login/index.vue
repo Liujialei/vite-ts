@@ -45,12 +45,12 @@ export default defineComponent({
       passWord: 'admin'
     })
 
-		const open3 = () => {
-			ElMessage({
-				message: 'Warning, this is a warning message.',
-				type: 'warning',
-			})
-		}
+    const open3 = () => {
+      ElMessage({
+        message: 'Warning, this is a warning message.',
+        type: 'warning',
+      })
+    }
     const rules = reactive<FormRules>({
       userName: [
         { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -84,7 +84,7 @@ export default defineComponent({
       ruleForm,
       rules,
       submitForm,
-			open3
+      open3
     }
   }
 })

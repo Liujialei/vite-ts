@@ -170,38 +170,32 @@ export const useLayoutStore = defineStore({
     //登录信息
     async login(param: loginParam):Promise<void> {
       const res = await login(param)
-			const {Data,Msg,Code} = res.data
-			ElMessage({
-				message: 'Warning, this is a warning message.',
-				type: 'warning',
-			})
-			if(Code===200){
-				const token = Data
-				//登录成功得到token
-				this.status.ACCESS_TOKEN = token
-				setLocal('token', this.status, 1000 * 60 * 60)
-				ElMessage({
-					message: Msg,
-					type: 'success'
-				})
-				const { query } = router.currentRoute.value
-				router.push(
-					typeof query.from === 'string' 
-						? decode(query.from) : '/'
-				)
-			}else{
-				ElMessage({
-					message: Msg,
-					type: 'warning'
-				})
-			}
+      const {Data,Msg,Code} = res.data
+      if(Code===200){
+        const token = Data
+        //登录成功得到token
+        this.status.ACCESS_TOKEN = token
+        setLocal('token', this.status, 1000 * 60 * 60)
+        ElMessage({
+          message: Msg,
+          type: 'success'
+        })
+        const { query } = router.currentRoute.value
+        router.push(
+          typeof query.from === 'string' 
+            ? decode(query.from) : '/'
+        )
+      }else{
+        ElMessage({
+          message: Msg,
+          type: 'warning'
+        })
+      }
     },
     //获取用户信息
     async getUser():Promise<void> {
       const res = await getUser()
       const userInfo = res.data.Data
-      this.userInfo.name = userInfo.name
-      this.userInfo.role = userInfo.role
     },
     //读取token信息
     setToken(token:string):void {

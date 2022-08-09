@@ -52,7 +52,6 @@ export default [
 		timeout: 300,
 		response: (req: IReq) => {
 			const { userName, passWord } = req.body
-			debugger
 			if(userName==='admin'&&passWord==='admin'){
 				return responseData(200, '登陆成功', setToken(userName))
 			}else{

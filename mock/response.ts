@@ -7,10 +7,10 @@ export const setToken = function(name: string):string {
 }
 
 export const checkToken = function(req:IReq):string {
-    const token = req.headers['access-token']
-    const match = token.match(/^token_([\w|\W]+?)_token/)
-    const userName = match ? match[1] : ''
-    return userName
+	const token = req.headers['access-token']
+	const match = token.match(/^token_([\w|\W]+?)_token/)
+	const userName = match ? match[1] : ''
+	return userName
 }
 
 export const getUser = function(name: string):{name:string, role: Array<string>} {

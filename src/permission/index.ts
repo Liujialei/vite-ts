@@ -23,7 +23,7 @@ const verifyToken = 'token'
 router.beforeEach(async(to,from) => {
   start()
   const { 
-    getStatus,
+		getStatus,
     getMenubar,
     getTags,
     setToken, 
@@ -35,6 +35,7 @@ router.beforeEach(async(to,from) => {
     addCachedViews, 
     changeNocacheViewStatus
   } = useLayoutStore()
+	
   // 修改页面title
   const reg = new RegExp(/^(.+)(\s\|\s.+)$/)
   const appTitle = import.meta.env.VITE_APP_TITLE
@@ -86,8 +87,8 @@ router.beforeEach(async(to,from) => {
 
   // 缓存重置
   changeNocacheViewStatus(false)
-	//处理路由跳转前取消所有请求 
-	Cancel.clearPendings()
+  //处理路由跳转前取消所有请求 
+  Cancel.clearPendings()
 })
 
 router.afterEach(() => {
