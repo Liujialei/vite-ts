@@ -28,6 +28,7 @@ export default {
 		},
 	},
 	rollupOptions:{
+		external:['vite-plugin-mock'],
 		output:{
 			manualChunks:{
 				// 拆分代码，配置完后自动按需加载

@@ -19,7 +19,7 @@ export const useLayoutStore = defineStore({
   id: 'layout',
   state: ():ILayout => ({
     menubar: {
-      status: true,
+      status: false,
       menuList: []
     },
     // 用户信息
@@ -34,11 +34,6 @@ export const useLayoutStore = defineStore({
       isNocacheView: false
     },
     setting: {
-      theme: setting.theme !== undefined ? setting.theme : 0,
-      showTags: setting.showTags !== undefined ? setting.showTags : true,
-      color: {
-        primary: setting.color !== undefined ? setting.color.primary : '#409eff'
-      },
       usePinyinSearch: setting.usePinyinSearch !== undefined ? setting.usePinyinSearch : false,
       mode: setting.mode || 'vertical'
     },
@@ -67,16 +62,17 @@ export const useLayoutStore = defineStore({
     }
   },
   actions:{
+		//点击左导航缩放
     changeCollapsed():void {
       this.menubar.status = !this.menubar.status
     },
+		//浏览器缩放处理
     changeDeviceWidth():void {
-			//浏览器缩放处理
 			// this.menubar.status = !this.menubar.status
     },
     // 切换导航，记录打开的导航
     changeTagNavList(cRouter:RouteLocationNormalizedLoaded):void {
-      if(!this.setting.showTags) return // 判断是否开启多标签页
+     
       // if(cRouter.meta.hidden && !cRouter.meta.activeMenu) return // 隐藏的菜单如果不是子菜单则不添加到标签
       if(new RegExp('^\/redirect').test(cRouter.path)) return
       const index = this.tags.tagsList.findIndex(v => v.path === cRouter.path)
@@ -94,6 +90,7 @@ export const useLayoutStore = defineStore({
       }
       this.tags.tagsList.push(tagsList)
     },
+		//标签处理
     removeTagNav(obj:{tagsList:ITagsList, cPath: string}):void {
       const index = this.tags.tagsList.findIndex(v => v.path === obj.tagsList.path)
       if(this.tags.tagsList[index].path === obj.cPath) {
@@ -107,22 +104,8 @@ export const useLayoutStore = defineStore({
         this.removeCachedViews({ name: obj.tagsList.name, index })
       }
     },
-    removeOtherTagNav(tagsList:ITagsList):void {
-      const index = this.tags.tagsList.findIndex(v => v.path === tagsList.path)
-      this.tags.tagsList.splice(index + 1)
-      this.tags.tagsList.splice(0, index)
-      this.tags.cachedViews.splice(index + 1)
-      this.tags.cachedViews.splice(0, index)
-      router.push({ path: tagsList.path })
-    },
-    removeAllTagNav():void {
-      this.tags.tagsList.splice(0)
-      this.tags.cachedViews.splice(0)
-      router.push({ path: '/redirect/' })
-    },
     // 添加缓存页面
     addCachedViews(obj: {name: string, noCache: boolean}):void {
-      if(!this.setting.showTags) return // 判断是否开启多标签页
       if(obj.noCache || this.tags.cachedViews.includes(obj.name)) return
       this.tags.cachedViews.push(obj.name)
     },
@@ -131,24 +114,6 @@ export const useLayoutStore = defineStore({
       // 判断标签页是否还有该页面
       if(this.tags.tagsList.map(v => v.name).includes(obj.name)) return
       this.tags.cachedViews.splice(obj.index, 1)
-    },
-    // 删除所有缓存页面并刷新当前页面
-    removeAllCachedViews() {
-      this.tags.cachedViews.splice(0)
-      this.refreshViews()
-    },
-    // 刷新页面，默认刷新当前页面
-    refreshViews(type: 'push' | 'replace' = 'replace', path = router.currentRoute.value.fullPath, name = router.currentRoute.value.name) {
-      this.changeNocacheViewStatus(true)
-      // 删除页面的缓存
-      const index = this.tags.cachedViews.findIndex(v => v === name)
-      index !== -1 && this.tags.cachedViews.splice(index, 1)
-      if(type === 'push') {
-        router.push(`/redirect${path}`)
-      }else{
-        router.replace(`/redirect${path}`)
-      }
-				
     },
     // 缓存重置
     changeNocacheViewStatus(isNoCache: boolean) {
@@ -209,47 +174,6 @@ export const useLayoutStore = defineStore({
     //合并路由
     concatAllowRoutes():void {
       allowRouter.reverse().forEach(v => this.menubar.menuList.unshift(v))
-    },
-    // 修改主题
-    changeTheme(num?:number):void {
-      if(num === this.setting.theme) return
-      if(typeof num !== 'number') num = this.setting.theme
-      this.setting.theme = num
-      localStorage.setItem('setting', qs.stringify(this.setting))
-    },
-    // 修改主题色
-    changeThemeColor(color: string):void {
-      this.setting.color.primary = color
-      localStorage.setItem('setting', qs.stringify(this.setting))
-    },
-    changeTagsSetting(showTags:boolean):void {
-      this.setting.showTags = showTags
-      localStorage.setItem('setting', qs.stringify(this.setting))
-
-      if(showTags) {
-        const index = this.tags.tagsList.findIndex(v => v.path === router.currentRoute.value.path)
-        if(index !== -1) {
-          this.tags.tagsList.forEach(v => v.isActive = false)
-          this.tags.tagsList[index].isActive = true
-        }else{
-          this.changeTagNavList(router.currentRoute.value)
-        }
-      }
-    },
-    changePinSearchSetting(showPinyinSearch:boolean):void {
-      this.setting.usePinyinSearch = showPinyinSearch
-      localStorage.setItem('setting', qs.stringify(this.setting))
-    },
-    // 下次进去该页面刷新该页面(解决子页面保存之后，回到父页面页面不刷新问题)
-    refreshPage(path: string):void {
-      const name = this.tags.tagsList.filter(v => v.path === path)[0]?.name
-      if(!name) return
-      const index = this.tags.cachedViews.findIndex(v => v === name)
-      this.tags.cachedViews.splice(index, 1)
-    },
-    changemenubarMode(mode: 'horizontal' | 'vertical'):void {
-      this.setting.mode = mode
-      localStorage.setItem('setting', qs.stringify(this.setting))
     }
   }
 })

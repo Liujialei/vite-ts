@@ -20,9 +20,10 @@ export default defineConfig(({ command, mode }) => {
 	const env = loadEnv(mode, root)
 	const viteEnv = wrapperEnv(env)
 	const isBuild = command === 'serve'
-	const { VITE_PORT, VITE_PUBLIC_PATH, VITE_DROP_CONSOLE,VITE_PREVIEW_PORT } = viteEnv
+	const { VITE_PORT, VITE_PUBLIC_PATH,VITE_USE_MOCK, VITE_DROP_CONSOLE,VITE_PREVIEW_PORT } = viteEnv
 	const pluginsParam = {
-		isBuild
+		isBuild,
+		viteEnv
 	}
 	
 	// console.log('viteEnv',viteEnv)

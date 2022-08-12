@@ -10,6 +10,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import viteCompression from 'vite-plugin-compression'
 const root = process.cwd()
 
 const getParams = (data: any) => {
@@ -63,7 +64,14 @@ const defaultPluginsFun = (pluginsParam: any)=>{
 			iconDirs: [resolve(root, 'src/icons/svg')],
 			// 指定symbolId格式
 			symbolId: 'icon-[dir]-[name]'
-		})
+		}),
+		// viteCompression({ //gzip压缩
+    //   verbose: true,
+    //   disable: false,
+    //   threshold: 10240,
+    //   algorithm: 'gzip',
+    //   ext: '.gz'
+    // })
 	]
 	
 	return defaultPlugins
