@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ILayout, IMenubarStatus, ITagsList, IMenubarList, ISetting, IMenubar, IStatus, ITags, IUserInfo } from '@/type/store/layout'
+import { ILayout, ITagsList, IMenubarList, ISetting, IMenubar, IStatus, ITags, IUserInfo } from '@/type/store/layout'
 import { setLocal, getLocal, decode } from '@/utils/tools'
 import router from '@/router'
 import { generatorDynamicRouter } from '@/router/asyncRouter'
@@ -19,9 +19,8 @@ export const useLayoutStore = defineStore({
   id: 'layout',
   state: ():ILayout => ({
     menubar: {
-      status: document.body.offsetWidth < 768 ? IMenubarStatus.PHN : IMenubarStatus.PCE,
-      menuList: [],
-      isPhone: document.body.offsetWidth < 768
+      status: true,
+      menuList: []
     },
     // 用户信息
     userInfo: {
@@ -69,17 +68,11 @@ export const useLayoutStore = defineStore({
   },
   actions:{
     changeCollapsed():void {
-      this.menubar.status = this.menubar.isPhone
-        ? this.menubar.status === IMenubarStatus.PHN 
-          ? IMenubarStatus.PHE 
-          : IMenubarStatus.PHN
-        : this.menubar.status === IMenubarStatus.PCN 
-          ? IMenubarStatus.PCE 
-          : IMenubarStatus.PCN
+      this.menubar.status = !this.menubar.status
     },
     changeDeviceWidth():void {
-      this.menubar.isPhone = document.body.offsetWidth < 768
-      this.menubar.status = this.menubar.isPhone ? IMenubarStatus.PHN : IMenubarStatus.PCE
+			//浏览器缩放处理
+			// this.menubar.status = !this.menubar.status
     },
     // 切换导航，记录打开的导航
     changeTagNavList(cRouter:RouteLocationNormalizedLoaded):void {
@@ -195,7 +188,7 @@ export const useLayoutStore = defineStore({
     //获取用户信息
     async getUser():Promise<void> {
       const res = await getUser()
-      const userInfo = res.data.Data
+      this.userInfo = res.data.Data
     },
     //读取token信息
     setToken(token:string):void {

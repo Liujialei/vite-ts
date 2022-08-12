@@ -15,3 +15,4 @@ export function UseElIcon(icon: string, _class?: object): Component {
     }
   })
 }
+

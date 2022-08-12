@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { PropType } from 'vue'
 import { IMenubarList } from '@/type/store/layout'
-import { UseElIcon } from '@/components/SvnIcon/elIcon'
+import { UseElIcon } from '@/components/SvnIcon/svgicon'
 
 name: 'MenubarItem'
 defineProps({

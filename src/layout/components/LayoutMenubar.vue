@@ -1,18 +1,13 @@
 <template>
-	<div>
-		<el-menu 
-		:default-openeds="defaultOpeneds"
-		:mode='getMenubar.isPhone ? "vertical" : getSetting.mode'
-		:default-active='activeMenu'
-		:collapse='getMenubar.status === 1 || getMenubar.status === 3'
-		:collapse-transition='false'
-		:unique-opened='true'
-		@select='onOpenChange'>
-			<menubar-item 
-				v-for='v in filterMenubarData' 
-				:key='v.path' 
-				:index='v.path' 
-				:menu-list='v' />
+	<div class="layout-menubar-class">
+		<el-menu :default-openeds="defaultOpeneds" 
+			:mode='getSetting.mode'
+			:default-active='activeMenu' 
+			:collapse='getMenubar.status'
+			:collapse-transition='false' 
+			:unique-opened='true' 
+			@select='onOpenChange'>
+			<menubar-item v-for='v in filterMenubarData' :key='v.path' :index='v.path' :menu-list='v' />
 		</el-menu>
 	</div>
 </template>
@@ -34,7 +29,7 @@ const activeMenu = computed(() => {
 })
 const onOpenChange = (d: any) => {
 	router.push({ path: d })
-	getMenubar.status === 2 && changeCollapsed()
+	getMenubar.status && changeCollapsed()
 }
 
 // 过滤隐藏的菜单，并提取单条的子菜单
@@ -63,5 +58,7 @@ setRoutes(filterMenubarData)
 </script>
 	
 <style lang="scss" scoped>
-
+.layout-menubar-class{
+	flex: 1 1 0%;
+}
 </style>
