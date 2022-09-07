@@ -2,7 +2,6 @@
 
 declare global{
 	type Recordable<T = any> = Record<string, T>;
-	
 	interface ViteEnv {
 		VITE_PORT: number;
 		VITE_PREVIEW_PORT: number;
@@ -17,9 +16,11 @@ declare global{
 		[index: string]: T
 	}
 	interface IResponse<T = any> {
-		Code: number;
-		Msg: string;
-		Data: T;
+		entity: T;
+		message: string;
+		Msg?: string;
+		success: boolean;
 	}
+	
 }
 export {}

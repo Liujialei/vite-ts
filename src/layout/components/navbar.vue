@@ -55,7 +55,7 @@ import Screenfull from '@/layout/components/screenfull.vue'
 import Search from '@/layout/components/search.vue'
 
 
-const { getMenubar, getUserInfo, changeCollapsed, logout, getSetting } = useLayoutStore()
+const { getMenubar, getUserInfo, changeCollapsed, logout } = useLayoutStore()
 const route: RouteLocationNormalizedLoaded = useRoute()
 const userInfo = getUserInfo
 

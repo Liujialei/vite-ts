@@ -12,9 +12,9 @@ export const role = [
 ]
 
 export const user_role = [
-    { userName: 'admin', roleName: 'admin' },
-    { userName: 'dev', roleName: 'dev' },
-    { userName: 'test', roleName: 'test' }
+    { username: 'admin', roleName: 'admin' },
+    { username: 'dev', roleName: 'dev' },
+    { username: 'test', roleName: 'test' }
 ]
 
 export const permission = [

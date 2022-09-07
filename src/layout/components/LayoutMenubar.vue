@@ -1,7 +1,6 @@
 <template>
 	<div class="layout-menubar-class">
-		<el-menu :default-openeds="defaultOpeneds" 
-			:mode='getSetting.mode'
+		<el-menu 
 			:default-active='activeMenu' 
 			:collapse='getMenubar.status'
 			:collapse-transition='false' 
@@ -21,15 +20,15 @@ import { IMenubarList } from '@/type/store/layout'
 
 const route = useRoute()
 const router = useRouter()
-const { getMenubar, setRoutes, changeCollapsed, getSetting } = useLayoutStore()
-const defaultOpeneds = ['1', '1']
+const { getMenubar, setRoutes, menuList, changeCollapsed } = useLayoutStore()
+// const defaultOpeneds = ['1', '1']
 const activeMenu = computed(() => {
 	if (route.meta.activeMenu) return route.meta.activeMenu
 	return route.path
 })
 const onOpenChange = (d: any) => {
 	router.push({ path: d })
-	getMenubar.status && changeCollapsed()
+	// getMenubar.status && changeCollapsed()
 }
 
 // 过滤隐藏的菜单，并提取单条的子菜单
@@ -52,8 +51,8 @@ const filterMenubar = (menuList: IMenubarList[]) => {
 	return f(menuList)
 }
 
-const filterMenubarData = filterMenubar(getMenubar.menuList)
-setRoutes(filterMenubarData)
+const filterMenubarData = menuList
+// setRoutes(menuList)
 
 </script>
 	

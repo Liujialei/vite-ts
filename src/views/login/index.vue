@@ -6,18 +6,29 @@
 					<div class="login-title">系统登陆</div>
 					<el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" :label-width=labelWidth class="login-ruleForm"
 						:size="formSize">
-						<el-form-item label="用户名" prop="userName">
-							<el-input ref="userName" prefix-icon="el-icon-user" v-model="ruleForm.userName" />
+						<el-form-item label="用户名" prop="username">
+							<el-input ref="username" prefix-icon="el-icon-user" v-model="ruleForm.username" />
 						</el-form-item>
-						<el-form-item label="密码" prop="passWord">
-							<el-input ref="passWord" prefix-icon='el-icon-lock' type="password" show-password
-								v-model="ruleForm.passWord" />
+						<el-form-item label="密码" prop="password">
+							<el-input ref="password" prefix-icon='el-icon-lock' type="password" show-password
+								v-model="ruleForm.password" />
+						</el-form-item>
+						<el-form-item label="验证码" prop="kaptcha">
+							<el-input ref="kaptcha" class="kaptchaInput" v-model="ruleForm.kaptcha" />
+							<span @click="refreshCode" class="kaptchaSpan">
+								<el-image class="imageKaptch" :src="`data:image/png;base64,${IdentifyCode}`">
+									<div slot="placeholder">
+										加载中
+										<span class="dot">...</span>
+									</div>
+								</el-image>
+							</span>
 						</el-form-item>
 						<el-form-item>
 							<el-button type="primary" @click="submitForm(ruleFormRef)">
 								登录
 							</el-button>
-							<el-button :plain="true" @click="open3">warning</el-button>
+
 						</el-form-item>
 					</el-form>
 				</div>
@@ -27,73 +38,65 @@
 
 </template>
 
-<script lang="ts">
-import { defineComponent,onMounted,reactive, ref, toRef, toRefs } from 'vue'
+<script setup lang="ts">
+import { onMounted,reactive, ref, toRef, toRefs } from 'vue'
 import { FormInstance, FormRules, ElNotification, ElMessage } from 'element-plus'
 import { useLayoutStore } from '@/store/modules/layout'
-// import { Avatar } from '@element-plus/icons-vue'
+import { storeToRefs } from 'pinia'
+import { loginParam } from '@/type/utils/tools';
 
-export default defineComponent({
-  setup(props, context) {
-    const { login } = useLayoutStore()
-    const passWord = ref(null)
-    const formSize = ref('default')
-    const labelWidth = ref('120px')
-    const ruleFormRef = ref<FormInstance>()
-    const ruleForm = reactive({
-      userName: 'admin',
-      passWord: 'admin'
-    })
+const { login, getUser, getIdentifyCode, getterIdentifyCode } = useLayoutStore()
+const { IdentifyCode,headersId } = storeToRefs(useLayoutStore())
+const password = ref(null)
+const formSize = ref('default')
+const labelWidth = ref('120px')
+const ruleFormRef = ref<FormInstance>()
 
-    const open3 = () => {
-      ElMessage({
-        message: 'Warning, this is a warning message.',
-        type: 'warning',
-      })
-    }
-    const rules = reactive<FormRules>({
-      userName: [
-        { required: true, message: '请输入用户名', trigger: 'blur' },
-        { min: 3, max: 5, message: '用户名大小长度为3-5', trigger: 'blur' }
-      ],
-      passWord: [
-        { required: true, message: '请输入用密码', trigger: 'blur' },
-        { min: 3, max: 5, message: '密码大小长度为3', trigger: 'blur' }
-      ]
-    })
-
-    //登录信息认证
-    const submitForm = async (formEl: FormInstance | undefined) => {
-      if (!formEl) return
-      await formEl.validate(async (valid, fields) => {
-        if (valid) {
-          const param ={
-            ...ruleForm
-          }
-          await login(param)
-        } else {
-          console.log('error submit!', fields)
-        }
-      })
-    }
-    return { 
-      passWord,
-      formSize,
-      labelWidth,
-      ruleFormRef,
-      ruleForm,
-      rules,
-      submitForm,
-      open3
-    }
-  }
+const ruleForm = reactive({
+	username: 'test-0413',
+	password: '1qaz@WSX',
+	kaptcha:''
 })
+const rules = reactive<FormRules>({
+	username: [
+		{ required: true, message: '请输入用户名', trigger: 'blur' }
+	],
+	password: [
+		{ required: true, message: '请输入用密码', trigger: 'blur' }
+	],
+	kaptcha: [
+		{ required: true, message: '请输入用验证码', trigger: 'blur' }
+	]
+})
+//验证码刷新
+const refreshCode =() => {
+	getIdentifyCode()
+}
+//登录信息认证
+const submitForm = async (formEl: FormInstance | undefined) => {
+	if (!formEl) return
+	await formEl.validate(async (valid, fields) => {
+		if (valid) {
+			const param: loginParam = {
+				...ruleForm,
+				id: headersId.value
+			}
+			await login(param)
+			await getUser()
+		} else {
+			console.log('error submit!', fields)
+		}
+	})
+}
+onMounted(async () => {
+	//验证码调用
+	await getIdentifyCode()
+})
+
 
 </script>
 
 <style lang="scss" scoped>
-
-
 .login-fade-enter-active {
 	transition: all 0.3s ease-out;
 }
@@ -128,6 +131,20 @@ export default defineComponent({
 				margin-bottom: 20px;
 				font-size: 30px;
 				margin-left: 70px;
+			}
+			.login-ruleForm{
+				.kaptchaInput{
+					width: 64%;
+				}
+				.kaptchaSpan{
+					margin-top: 10px;
+					width: 36%;
+					.imageKaptch {
+							width: 100%;
+							height: 34px;
+							border-radius: 4px;
+						}
+				}
 			}
 		}
 	}

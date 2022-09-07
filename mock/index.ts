@@ -1,7 +1,8 @@
 import { MockMethod } from 'vite-plugin-mock'
 import { mock, Random } from 'mockjs'
-import { setToken, checkToken, getUser, getRoute } from './response'
+import { setToken, getRoute } from './response'
 import { api } from "../src/type/mockApi"
+import { getUser } from '../src/api/layout/index';
 
 export interface IReq { 
 	body: any; 
@@ -51,22 +52,21 @@ export default [
 		method: 'post',
 		timeout: 300,
 		response: (req: IReq) => {
-			const { userName, passWord } = req.body
-			if(userName==='admin'&&passWord==='admin'){
-				return responseData(200, '登陆成功', setToken(userName))
+			const { username, password } = req.body
+			if(username==='admin'&&password==='admin'){
+				return responseData(200, '登陆成功', setToken(username))
 			}else{
 				return responseData(402, '用户名或密码错误', '')
 			}
 		}
 	},
 	{
-		url: api.getUser,
+		url: api.userUrl,
 		method: 'get',
 		timeout: 300,
 		response: (req: IReq) => {
-			const userName = checkToken(req)
-			if(!userName) return responseData(401, '身份认证失败', '')
-			return responseData(200, '', getUser(userName))
+			// if(!username) return responseData(401, '身份认证失败', '')
+			return responseData(200, '', getUser())
 		}
 	},
 	{
@@ -74,9 +74,8 @@ export default [
 		method: 'get',
 		timeout: 300,
 		response: (req: IReq) => {
-			const userName = checkToken(req)
-			if(!userName) return responseData(401, '身份认证失败', '')
-			return responseData(200, '', getRoute(userName))
+			// if(!username) return responseData(401, '身份认证失败', '')
+			// return responseData(200, '', getRoute(username))
 		}
 	},
 	{
@@ -84,8 +83,7 @@ export default [
 		method: 'get',
 		timeout: 600,
 		response: (req: IReq) => {
-			const userName = checkToken(req)
-			if(!userName) return responseData(401, '身份认证失败', '')
+			// if(!username) return responseData(401, '身份认证失败', '')
 			const { page, size, tag } = req.query
 			const data = tag === '所有' ? tableList.list : tableList.list.filter(v => v.tag === tag)
 			const d = {

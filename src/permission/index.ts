@@ -3,7 +3,6 @@ import { configure, start, done } from 'nprogress'
 import { RouteRecordRaw } from 'vue-router'
 import { decode, encode } from '@/utils/tools'
 import { useLayoutStore } from '@/store/modules/layout'
-import { useLocal } from '@/utils/tools'
 import Cancel from "@/utils/cancel"
 
 configure({ 
@@ -24,9 +23,9 @@ router.beforeEach(async(to,from) => {
   start()
   const { 
 		getStatus,
-    getMenubar,
+    getMenuRouteList,
+		menuList,
     getTags,
-    setToken, 
     logout,
     GenerateRoutes,
     getUser, 
@@ -44,32 +43,27 @@ router.beforeEach(async(to,from) => {
     : appTitle.match(reg) 
       ? appTitle.replace(reg, `${to.meta.title}$2`) 
       : `${to.meta.title} | ${appTitle}`
-	 
+
   // 判断当前是否在登陆页面
 	 if(to.path.toLocaleLowerCase()===loginRoutePath.toLocaleLowerCase()){
     done()
-    if(getStatus.ACCESS_TOKEN) return typeof to.query.from === 'string' ? decode(to.query.from) : defaultRoutePath
+    if(getStatus) return typeof to.query.from === 'string' ? decode(to.query.from) : defaultRoutePath
     return
   }
 
 	 // 判断是否登录
-	 	if(!getStatus.ACCESS_TOKEN) {
+	 	if(!getStatus) {
     	return loginRoutePath + (to.fullPath ? `?from=${encode(to.fullPath)}` : '')
 	 	}
-		
-  // 前端检查token是否失效
-  useLocal(verifyToken)
-    .then(d =>setToken(d.ACCESS_TOKEN))
-    .catch(() => logout())
 
   // 判断是否还没添加过路由
-  if(getMenubar.menuList.length === 0) {
+  if(menuList.length === 0) {
     //获取用户信息
     await getUser()
     //获取路由信息
     await GenerateRoutes()
-    for(let i = 0;i < getMenubar.menuList.length;i++) {
-      router.addRoute(getMenubar.menuList[i] as RouteRecordRaw)
+    for(let i = 0;i < menuList.length;i++) {
+      router.addRoute(menuList[i] as RouteRecordRaw)
     }
     //合并路由
     concatAllowRoutes()

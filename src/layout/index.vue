@@ -45,7 +45,7 @@ import { throttle } from '../utils/tools';
 const layoutMenubar = ref()
 const layoutWidth = ref('200px')
 
-const { changeDeviceWidth, changeCollapsed, getMenubar, getSetting } = useLayoutStore()
+const { changeDeviceWidth, changeCollapsed, getMenubar } = useLayoutStore()
 
 onMounted(async () => {
 	changeDeviceWidth()

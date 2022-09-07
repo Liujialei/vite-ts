@@ -23,42 +23,45 @@ Object.keys(modules).forEach(key => {
 })
 
 const asyncRouter:IMenubarList[] = [
-  {
-    path: '/:pathMatch(.*)*', 
-    name: 'NotFound', 
-    component: components['404'],
-    meta: {
-      title: 'NotFound',
-      icon: '',
-      hidden: true
-    }, 
-    redirect: {
-      name: '404'
-    }
-  }
+  // {
+  //   path: '/:pathMatch(.*)*', 
+  //   name: 'NotFound', 
+  //   component: components['404'],
+  //   meta: {
+  //     title: 'NotFound',
+  //     icon: '',
+  //     hidden: true
+  //   }, 
+  //   redirect: {
+  //     name: '404'
+  //   }
+  // },
+	
+	
 ]
 const generatorDynamicRouter = (data:IMenubarList[]):void => {
   const { setRoutes } = useLayoutStore()
-  //对获取的异步路由进行进一步treeList处理
-  const routerList:IMenubarList[] = listToTree(data, 0)
+  // //对获取的异步路由进行进一步treeList处理
+  // const routerList:IMenubarList[] = listToTree(data, 0)
 	
-  asyncRouter.forEach(v => routerList.push(v))
+  // asyncRouter.forEach(v => routerList.push(v))
 	
-  const f = (data:IMenubarList[], pData:IMenubarList|null) => {
-    for(let i = 0,len = data.length;i < len;i++) {
-      const v:IMenubarList = data[i]
-      if(typeof v.component === 'string') v.component = components[v.component]
-      if(!v.meta?.permission || pData && v.meta.permission.length === 0) {
-        if(v.meta)
-          v.meta.permission = pData && pData.meta && pData.meta.permission ? pData.meta.permission : []
-      }
-      if(v.children && v.children.length > 0) {
-        f(v.children, v)
-      }
-    }
-  }
-  f(routerList, null)
-  setRoutes(routerList)
+  // const f = (data:IMenubarList[], pData:IMenubarList|null) => {
+  //   for(let i = 0,len = data.length;i < len;i++) {
+  //     const v:IMenubarList = data[i]
+  //     if(typeof v.component === 'string') v.component = components[v.component]
+  //     if(!v.meta?.permission || pData && v.meta.permission.length === 0) {
+  //       if(v.meta)
+  //         v.meta.permission = pData && pData.meta && pData.meta.permission ? pData.meta.permission : []
+  //     }
+  //     if(v.children && v.children.length > 0) {
+  //       f(v.children, v)
+  //     }
+  //   }
+  // }
+  // f(routerList, null)
+  // setRoutes(routerList)
+  setRoutes(asyncRouter)
 }
 export {
   components,

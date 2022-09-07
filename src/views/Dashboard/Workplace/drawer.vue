@@ -11,7 +11,7 @@ import { useLayoutStore } from '@/store/modules/layout'
 import { ref } from 'vue'
 const drawer = ref(false)
 name: 'drawer'
-
+const getRefData = (data:any) => (console.log(data))
 defineExpose({
 	drawer
 })

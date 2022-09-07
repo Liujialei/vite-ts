@@ -1,16 +1,5 @@
 
-export interface IMenubar {
-	status: boolean
-	menuList: Array<IMenubarList>
-}
-export interface ISetting {
-	usePinyinSearch: boolean
-	mode: 'horizontal' | 'vertical' // 导航模式
-}
-export interface IUserInfo {
-	name: string,
-	role: string[]
-}
+export interface IUserInfo {}
 export interface ITagsList {
 	name: string
 	title: string
@@ -22,19 +11,17 @@ export interface ITags {
 	cachedViews: string[]
 	isNocacheView: boolean
 }
-export interface IStatus {
-	isLoading: boolean
-	ACCESS_TOKEN: string
+export interface IMenuRouteList{
+	
 }
 export interface ILayout {
-	// 左侧导航栏
-	menubar: IMenubar
+	IdentifyCode:string,
+	headersId:string,
 	// 用户信息
-	userInfo: IUserInfo
+	userInfo: IUserInfo,
+	menuList:Array<IMenuRouteList>,
 	// 标签栏
 	tags: ITags
-	setting: ISetting
-	status:IStatus
 }
 
 //左导航字段定义规范
